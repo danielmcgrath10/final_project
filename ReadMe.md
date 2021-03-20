@@ -10,7 +10,7 @@ bars near you as well as what their ratings are and who is “going”. I
 essentially want to create a mixture of Instagram and Yelp for 
 drinking that is clean and easy to use.
 
-Upon entering the app for the first time, the user will encounter a 
+ Upon entering the app for the first time, the user will encounter a 
 typical registration or login screen. This will lead a user through a 
 set of prompts that obtain their email, password, and favorite 
 drinks. The user will then land on a feed that will be empty until 
@@ -94,7 +94,7 @@ are around them on a Google Maps instance, and which ones are hosting
 the most people. One of the challenges I foresee with this is 
 figuring out what the best route going forward is going to be for 
 displaying the map information. I will have to play around a lot with 
-overlays on maps to get the most ideal result of  a fully customized 
+overlays on maps to get the most ideal result of a fully customized 
 icon, or in the worst-case scenario simply show the locations in a 
 list with the distance away on the list item. This will be using the 
 places around you section. In doing this, people will be able to see 
@@ -107,12 +107,16 @@ I am not going to be blowing out my API limit with a faulty request.
 I then implemented this request in Elixir because this request is 
 going to be handled on the Elixir side of things. The user is going 
 to request the page then the server is going to grab those values and 
-pass them to the user. The result was successful. Google’s APIs are 
-very intuitive. They make it a very simple RESTful request. I learned 
-that there even was a Places API. I wasn’t originally sure that I 
-could get local places for the user to check out. This opens up 
-another cool idea in that I could keep a list of name and addresses 
-paired with ratings to make a rating system for the places. 
+pass them to the user. The result was unsuccessful. In creating the 
+external test Elixir script, I was unable to figure out how to 
+incorporate the third-party HTTP request and Json decoding libraries 
+(HTTPoison and Poison respectively). Google’s APIs are very 
+intuitive. They make it a very simple RESTful request. I learned that 
+there even was a Places API. I wasn’t originally sure that I could 
+get local places for the user to check out. This opens up another 
+cool idea in that I could keep a list of name and addresses paired 
+with ratings to make a rating system for the places. 
+
 The second experiment focused on trying to overlay a point on a map 
 view using Google’s simple marker function. As I was not able to get 
 this working due to a hefty amount of debugging needed to get the 
