@@ -46,7 +46,9 @@ defmodule FinalProject.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:poison, "~> 3.1"},
-      {:httpoison, "~> 1.8"}
+      {:httpoison, "~> 1.8"},
+      {:cors_plug, "~> 2.0"},
+      {:argon2_elixir, "~> 2.0"}
     ]
   end
 

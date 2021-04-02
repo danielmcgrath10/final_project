@@ -1,0 +1,15 @@
+.login-group{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.login-switch:hover{
+    cursor: pointer;
+}

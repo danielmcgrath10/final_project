@@ -2,9 +2,9 @@ use Mix.Config
 
 # Configure your database
 config :final_project, FinalProject.Repo,
-  username: "postgres",
-  password: "postgres",
-  database: "final_project_dev",
+  username: "final_project",
+  password: "Ypiw4QCTnWmAyKpxDt",
+  database: "final_project_<env>",
   hostname: "localhost",
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
