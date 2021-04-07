@@ -1,5 +1,6 @@
 import store from "./store";
 import _ from "lodash";
+import { NotificationManager } from "react-notifications";
 
 const url = "http://localhost:4000/api/v1";
 
@@ -17,7 +18,8 @@ let opts = {
     },
     body: JSON.stringify(data),
 };
-let text = await fetch("http://events-spa.danny-mcgrath.com/api/v1" + path, opts);
+console.log(opts);
+let text = await fetch(url + path, opts);
 return await text.json();
 }
   
@@ -31,7 +33,7 @@ let opts = {
 };
 console.log(opts);
 let text = await fetch(
-    "http://events-spa.danny-mcgrath.com/api/v1" + path + "/" + id,
+    url + path + "/" + id,
     opts
 );
 return await text.json();
@@ -48,6 +50,8 @@ export function api_login(email, password) {
         };
         store.dispatch(action);
       } else if (data.error) {
+        console.log(data.error);
+        NotificationManager.error(data.error);
         let action = {
           type: "error/set",
           data: data.error,

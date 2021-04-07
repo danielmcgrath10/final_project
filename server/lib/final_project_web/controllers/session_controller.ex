@@ -1,8 +1,8 @@
 defmodule FinalProjectWeb.SessionController do
   use FinalProjectWeb, :controller
 
-  def create(conn, %{"name" => name, "password" => password}) do
-    user = FinalProjectWeb.Users.authenticate(name, password)
+  def create(conn, %{"email" => email, "password" => password}) do
+    user = FinalProject.Users.authenticate(email, password)
 
     if user do
       sess = %{
@@ -20,7 +20,7 @@ defmodule FinalProjectWeb.SessionController do
       |> put_resp_header(
         "content-type",
         "application/json; charset=UTF-8")
-      |> send_resp(:unauthorized, Jason.encode!(%{error: "Fail"}))
+      |> send_resp(:unauthorized, Jason.encode!(%{error: "Invalid Login"}))
     end
   end
 end

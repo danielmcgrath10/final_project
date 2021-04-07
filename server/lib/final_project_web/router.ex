@@ -13,17 +13,19 @@ defmodule FinalProjectWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/api/v1", FinalProjectWeb do
+  scope "/", FinalProjectWeb do
     pipe_through :browser
 
     get "/", PageController, :index
-    resources "/users", UserController
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", FinalProjectWeb do
-  #   pipe_through :api
-  # end
+  scope "/api/v1", FinalProjectWeb do
+    pipe_through :api
+
+    resources "/users", UserController, except: [:new, :edit]
+    resources "/session", SessionController, only: [:create]
+  end
 
   # Enables LiveDashboard only for development
   #

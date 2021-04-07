@@ -4,19 +4,22 @@ import { Container, Form } from "react-bootstrap";
 import "./login.scss";
 import _ from "lodash";
 import { api_login, create_user } from "../../api";
+import { NotificationManager } from "react-notifications";
 
 export default function Login(props) {
 
     const [createUser, setCreateUser] = useState(false);
     const [validated, setValidated] = useState(false);
-    const [user, setUser] = useState({name: "", email: "", file: {},password: ""});
+    const [user, setUser] = useState({name: "", email: "", profile_photo: {}, password: ""});
 
     const callApi = (type) => {
         if(type === "create"){
-            let data = _.pick(user, ["name", "email", "file", "password"]);
-            create_user(data);
+            let data = _.pick(user, ["name", "email", "profile_photo", "password"]);
+            if (_.isEmpty(data.profile_photo)) data.profile_photo = null;
+            create_user(data).then(() => reset());
         } else if (type === "login"){
             api_login(user.email, user.password);
+            reset();
         }
     }
 
@@ -26,8 +29,10 @@ export default function Login(props) {
         e.stopPropagation();
         if (form.checkValidity() === true) {
             callApi(type);
+        } else {
+            setValidated(true);
+            NotificationManager.error("Need Valid Email and/or Password");
         }
-        setValidated(true);
     };
 
     const update = (field, ev) => {
@@ -37,9 +42,13 @@ export default function Login(props) {
     }
 
     const changePage = () => {
-        setValidated(false);
-        setUser({name: "", email: "", file: {},password: ""});
+        reset();
         setCreateUser(!createUser);
+    }
+
+    const reset = () => {
+        setUser({name: "", email: "", profile_photo: {},password: ""});
+        setValidated(false);
     }
 
     return(
@@ -67,7 +76,7 @@ export default function Login(props) {
                                 <Form.Label>
                                     Photo
                                 </Form.Label>
-                                <Form.File onChange={(e) => update("file", e)}/>
+                                <Form.File onChange={(e) => update("profile_photo", e)}/>
                             </Form.Group>
                             <Form.Group required className={"login-group"}>
                                 <Form.Label>

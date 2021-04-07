@@ -1,3 +1,4 @@
+import { NotificationManager } from "react-notifications";
 import {createStore, combineReducers} from "redux";
 
 function users(state=[], action){
@@ -14,9 +15,13 @@ function save_session(sess) {
     localStorage.setItem("session", JSON.stringify(session));
   }
   
-  function stop_session(sess) {
-    let session = Object.assign({}, sess, { time: Date.now() });
+  function stop_session() {
     localStorage.removeItem("session");
+    if(!localStorage.getItem("session")){
+      NotificationManager.success("Successfully Logged Out");
+    } else {
+      NotificationManager.error("Something Went Wrong, Please Try Again");
+    }
   }
   
   function restore_session() {
@@ -41,17 +46,28 @@ function save_session(sess) {
         save_session(action.data);
         return action.data;
       case "session/clear":
-        stop_session(action.data);
+        stop_session();
         return null;
       default:
         return state;
     }
   }
 
+function error(state=null, action) {
+  switch(action.type) {
+    case "session/set":
+      return null;
+    case "error/set":
+      return action.data;
+    default:
+      return state;
+  }
+}
+
 function root_reducer(state, action) {
-    console.log("root reducter", state, action);
+    console.log("root reducer", state, action);
     let reducer = combineReducers({
-        users
+        users, session, error
     });
     return reducer(state, action);
 }

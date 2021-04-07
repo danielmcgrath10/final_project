@@ -37,6 +37,16 @@ defmodule FinalProject.Users do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
+  def get_user(id), do: Repo.get(User, id)
+
+  def get_user_by_name(name) do
+    Repo.get_by(User, name: name)
+  end
+
+  def get_user_by_email(email) do
+    Repo.get_by(User, email: email)
+  end
+
   @doc """
   Creates a user.
 
@@ -102,8 +112,8 @@ defmodule FinalProject.Users do
     User.changeset(user, attrs)
   end
 
-  def authenticate(name, pass) do
-    user = Repo.get_by!(User, name: name)
+  def authenticate(email, pass) do
+    user = Repo.get_by(User, email: email)
     case Argon2.check_pass(user, pass) do
       {:ok, user} -> user
       _ -> nil
