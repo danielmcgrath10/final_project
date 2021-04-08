@@ -3,6 +3,7 @@ defmodule FinalProjectWeb.UserSocket do
 
   ## Channels
   # channel "room:*", FinalProjectWeb.RoomChannel
+  channel "feed:*", FinalProjectWeb.FeedChannel
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After

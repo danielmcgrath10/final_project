@@ -8,6 +8,10 @@ defmodule FinalProject.Users.User do
     field :password_hash, :string
     field :photo_hash, :string, default: FinalProject.Inject.photo("user.png")
 
+    has_many :posts, FinalProject.Posts.Post
+    has_many :comments, FinalProject.Comments.Comment
+    has_many :likes, FinalProject.Likes.Like
+
     timestamps()
   end
 
@@ -24,8 +28,6 @@ defmodule FinalProject.Users.User do
   end
 
   def add_password_hash(cset, password) do
-    IO.inspect cset
-    IO.inspect password
     change(cset, Argon2.add_hash(password))
   end
 end
