@@ -39,6 +39,18 @@ let text = await fetch(
 return await text.json();
 }
 
+
+async function api_delete(path, id, session) {
+  let text = await fetch(url + path + "/" + id, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      },
+    body: JSON.stringify(session),
+  });
+  return await text;
+}
+
 //Taken from the notes
 export function api_login(email, password) {
     api_post("/session", { email: email, password: password }).then((data) => {
@@ -89,4 +101,12 @@ export const create_post = async (data, session) => {
       NotificationManager.success("Created Post");
     }
   })
+}
+
+export const add_comment = async (data, session) => {
+  api_post("/comments", {comment: data, session: session});
+}
+
+export const delete_comment = async (id, session) => {
+  api_delete("/comments", id, {session: session});
 }

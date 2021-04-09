@@ -1,5 +1,44 @@
 .feed-card {
     width: 40%;
-    min-height: 25vh;
+    // min-height: 25vh;
     margin-bottom: 50px;
+}
+
+.comment-compose{
+    display: flex;
+    padding: 10px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.compose-button{
+    height: 50px;
+    width: 50px;
+}
+
+.comment-input {
+    display: flex;
+    width: 85%;
+    justify-content: center;
+    align-items: center;
+}
+
+.comment-card-row{
+    justify-content: space-between;
+}
+
+.card-comments{
+    background-color: lightgrey;
+    overflow-y: scroll !important;
+    max-height: 40vh;
+}
+
+.comment-card {
+    padding: 10px;
+    margin: 10px;
+}
+
+.click-elem:hover {
+    text-decoration: none;
+    cursor: pointer;
 }

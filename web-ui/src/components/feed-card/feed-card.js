@@ -1,7 +1,10 @@
 import { Avatar, Card, CardActions, CardContent, CardHeader, Collapse, IconButton, makeStyles, Typography } from "@material-ui/core";
-import { Comment, ExpandMore, LocalBar, ThumbUp } from "@material-ui/icons";
+import { Close, Comment, Create, ExpandMore, LocalBar, ThumbUp } from "@material-ui/icons";
 import clsx from "clsx";
+import _ from "lodash";
 import React, { useState } from "react";
+import { Form, Row } from "react-bootstrap";
+import { add_comment, delete_comment } from "../../api";
 import "./feed-card.scss";
 
 // Got this format from the Material Ui Site
@@ -29,13 +32,60 @@ const useStyles = makeStyles((theme) => ({
 
 export default function FeedCard(props) {
     const {
-        post
+        post,
+        session
     } = props;
     const classes = useStyles();
     const [expand, setExpand] = useState(false);
+    const [comVis, setComVis] = useState(false);
+    const [comment, setComment] = useState({body: ""});
+    const [comVal, setComVal] = useState(false);
 
     const handleExpand = () => {
         setExpand(!expand);
+    }
+
+    const handleComClick = () => setComVis(!comVis);
+
+    const update = (field, e) => {
+        let u1 = Object.assign({}, comment);
+        u1[field] = e.target.value;
+        setComment(u1);
+    };
+
+    const resetCom = () => {
+        setComVis(false);
+        setComment({body: ""});
+        setComVal(false);
+    }
+
+    const postCom = () => {
+        let data = _.pick(comment, ["body"]);
+        data["user_id"] = session.user_id;
+        data["post_id"] = post.id;
+        add_comment(data, session).then(() => {
+            resetCom();
+        })
+    }
+
+    const handleDelCom = (id) => {
+        delete_comment(id, session);
+    }
+
+    const handleLikeClick = () => {
+
+    }
+
+    const subCom = (e) => {
+        const form = e.currentTarget;
+        e.stopPropagation();
+        e.preventDefault();
+
+        if(form.checkValidity()) {
+            postCom();
+        }
+
+        setComVal(true);
     }
 
     return(
@@ -66,10 +116,20 @@ export default function FeedCard(props) {
                 </Typography>
             </CardContent>
             <CardActions disableSpacing>
-                <IconButton aria-label={"Like"}>
-                    <ThumbUp/>
+                <IconButton 
+                    onClick={handleLikeClick}
+                    aria-label={"Like"}
+                >
+                    {post.likes.length}
+                    <ThumbUp
+                        // color={_.find(post.likes, [""])}
+                    />
                 </IconButton>
-                <IconButton aria-label={"Comment"}>
+                <IconButton
+                    onClick={handleComClick}
+                    aria-label={"Comment"}
+                 >
+                    {post.comments.length}
                     <Comment/>
                 </IconButton>
                 <IconButton 
@@ -83,7 +143,53 @@ export default function FeedCard(props) {
                     <ExpandMore/>
                 </IconButton>
             </CardActions>
-            <Collapse in={expand} timeout={"auto"} unmountOnExit >
+            {
+                comVis ?
+                    <Form noValidate validated={comVal} onSubmit={subCom} className={"comment-compose"}>
+                        <Form.Group className={"comment-input"}>
+                            <Form.Control
+                                required
+                                placeholder={"Comment..."}
+                                as={"textarea"}
+                                rows={3}
+                                value={comment.body}
+                                onChange={(e) => update("body", e)}
+                            />
+                        </Form.Group>
+                        <IconButton
+                            className={"compose-button"}
+                            type={"submit"}
+                        >
+                            <Create/>
+                        </IconButton>
+                    </Form>
+                :
+                    null
+            }
+            <Collapse in={expand} timeout={"auto"} unmountOnExit className={"card-comments"}>
+                {
+                    _.isEmpty(post.comments) ?
+                        null
+                    :
+                        _.map(post.comments, (comment, index) => (
+                            <Card key={index} className={"comment-card"}>
+                                <CardContent>
+                                    <Row className={"comment-card-row"}>
+                                        {comment.user.name}
+                                        {post.user.id === session.user_id ||
+                                        comment.user_id === session.user_id ? (
+                                            <IconButton
+                                                onClick={() => handleDelCom(comment.id)}
+                                            >
+                                                <Close/>
+                                            </IconButton>
+                                        ) : null}
+                                    </Row>
+                                    <Row>{comment.body}</Row>
+                                </CardContent>
+                            </Card>
+                        ))
+                }
             </Collapse>
         </Card>
     );

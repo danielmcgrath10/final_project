@@ -47,7 +47,7 @@ function Home({session, feed}) {
                     <h1>No Current Events</h1>
                 :
                     _.map(feed.reverse(), (post, index) => (
-                        <FeedCard key={index} post={post}/>
+                        <FeedCard key={index} session={session} post={post}/>
                     ))
             }
         </div>

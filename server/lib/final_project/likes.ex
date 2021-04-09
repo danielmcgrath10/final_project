@@ -19,6 +19,7 @@ defmodule FinalProject.Likes do
   """
   def list_likes do
     Repo.all(Like)
+    |> Repo.preload(:user)
   end
 
   @doc """
@@ -35,7 +36,10 @@ defmodule FinalProject.Likes do
       ** (Ecto.NoResultsError)
 
   """
-  def get_like!(id), do: Repo.get!(Like, id)
+  def get_like!(id) do
+    Repo.get!(Like, id)
+    |> Repo.preload(:user)
+  end
 
   @doc """
   Creates a like.
