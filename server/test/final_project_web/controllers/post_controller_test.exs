@@ -10,7 +10,7 @@ defmodule FinalProjectWeb.PostControllerTest do
     lat: 120.5,
     lon: 120.5,
     name: "some name",
-    photo_hash: "some photo_hash",
+    # photo_hash: "some photo_hash",
     rating: 120.5,
     timestamp: "2010-04-17T14:00:00Z"
   }
@@ -20,7 +20,7 @@ defmodule FinalProjectWeb.PostControllerTest do
     lat: 456.7,
     lon: 456.7,
     name: "some updated name",
-    photo_hash: "some updated photo_hash",
+    # photo_hash: "some updated photo_hash",
     rating: 456.7,
     timestamp: "2011-05-18T15:01:01Z"
   }

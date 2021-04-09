@@ -16,7 +16,7 @@ defmodule FinalProjectWeb.PostView do
       lat: post.lat,
       lon: post.lon,
       drinkName: post.drinkName,
-      photo_hash: post.photo_hash,
+      # photo_hash: post.photo_hash,
       rating: post.rating,
       caption: post.caption,
       timestamp: post.timestamp}
