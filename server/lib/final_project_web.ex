@@ -54,6 +54,7 @@ defmodule FinalProjectWeb do
   def channel do
     quote do
       use Phoenix.Channel
+      import Plug.Conn
       import FinalProjectWeb.Gettext
     end
   end

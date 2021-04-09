@@ -3,6 +3,7 @@ defmodule FinalProjectWeb.PostController do
 
   alias FinalProject.Posts
   alias FinalProject.Posts.Post
+  alias FinalProjectWeb.SessionController
 
   action_fallback FinalProjectWeb.FallbackController
 
@@ -11,12 +12,26 @@ defmodule FinalProjectWeb.PostController do
     render(conn, "index.json", posts: posts)
   end
 
-  def create(conn, %{"post" => post_params}) do
-    with {:ok, %Post{} = post} <- Posts.create_post(post_params) do
+  def create(conn, %{"post" => post_params, "session" => session}) do
+    IO.inspect post_params
+    IO.inspect session
+    if SessionController.authorized?(conn, session["user_id"], session["token"]) do
+      post_params = post_params
+      |> Map.put("user_id", session["user_id"])
+      |> Map.put("timestamp", DateTime.utc_now())
+
+      with {:ok, %Post{} = post} <- Posts.create_post(post_params) do
+        conn
+        |> put_status(:created)
+        |> put_resp_header("location", Routes.post_path(conn, :show, post))
+        |> render("show.json", post: post)
+      end
+    else
       conn
-      |> put_status(:created)
-      |> put_resp_header("location", Routes.post_path(conn, :show, post))
-      |> render("show.json", post: post)
+      |> put_resp_header(
+        "content-type",
+        "application/json; charset=UTF-8")
+      |> send_resp(:unauthorized, Jason.encode!(%{error: "Unauthorized"}))
     end
   end
 

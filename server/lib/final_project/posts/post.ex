@@ -8,7 +8,7 @@ defmodule FinalProject.Posts.Post do
     field :lat, :float
     field :lon, :float
     field :name, :string
-    field :photo_hash, :string
+    # field :photo_hash, :string
     field :rating, :float
     field :timestamp, :utc_datetime
 
@@ -22,8 +22,9 @@ defmodule FinalProject.Posts.Post do
 
   @doc false
   def changeset(post, attrs) do
+    # Remember to add photo_hash back when add photos
     post
-    |> cast(attrs, [:name, :lat, :lon, :drinkName, :photo_hash, :rating, :caption, :timestamp, :user_id])
-    |> validate_required([:name, :lat, :lon, :drinkName, :photo_hash, :rating, :caption, :timestamp, :user_id])
+    |> cast(attrs, [:name, :lat, :lon, :drinkName, :rating, :caption, :timestamp, :user_id])
+    |> validate_required([:name, :lat, :lon, :drinkName, :rating, :caption, :timestamp, :user_id])
   end
 end

@@ -12,13 +12,11 @@ import SocketProvider from './components/socket/socket-provider';
 
 
 function App({session}) {
-  console.log("session", session);
-  // const state = useChannel("feed", reducer)
   return (
     <Container fluid className="App">
       {
         session ?
-          <SocketProvider value={"/feed"} options={session["token"]}>
+          <SocketProvider url={"/socket"}>
             <Navbar/>
             <Switch>
               <Route path={"/home"}>

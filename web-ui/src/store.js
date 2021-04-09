@@ -64,6 +64,15 @@ function error(state=null, action) {
   }
 }
 
+export function feed_reducer(state={}, {event, payload}){
+  switch(event) {
+    case "feed/set":
+      return payload;
+    default:
+      return state;
+  }
+}
+
 function root_reducer(state, action) {
     console.log("root reducer", state, action);
     let reducer = combineReducers({

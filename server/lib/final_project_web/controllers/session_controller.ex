@@ -23,4 +23,13 @@ defmodule FinalProjectWeb.SessionController do
       |> send_resp(:unauthorized, Jason.encode!(%{error: "Invalid Login"}))
     end
   end
+
+  def authorized?(conn, id, token) do
+    user = FinalProject.Users.get_user(id)
+    if user do
+      Phoenix.Token.verify(conn, "user_id", token)
+    else
+      false
+    end
+  end
 end

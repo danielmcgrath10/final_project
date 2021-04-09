@@ -3,12 +3,13 @@ import { useContext, useEffect, useReducer } from "react"
 import { NotificationManager } from "react-notifications";
 import SocketContext from "./socket-context"
 
-const useChannel = (channel, reducer, initialState) => {
+const useChannel = (channelName, reducer, initialState, session) => {
     const socket = useContext(SocketContext);
     const [state, dispatch] = useReducer(reducer, initialState);
 
     useEffect(() => {
-        const channel = socket.channel(channel, {client: "browser"});
+        const channel = socket.channel(channelName + "hello", {params: {session: session}});
+        console.log(channel);
 
         channel.onMessage = (event, payload) => {
             dispatch({event, payload});
@@ -16,13 +17,15 @@ const useChannel = (channel, reducer, initialState) => {
         }
 
         channel.join()
-            .receive("ok", ({message}) => NotificationManager.success(`Successfully Joined Channel`, message))
-            .receive("error", ({error}) => NotificationManager.error("Error received", error))
+            .receive("ok", ({message}) => console.log(`Successfully Joined Channel`, message))
+            .receive("error", ({error}) => {
+                console.log(error);
+            })
 
         return() => {
             channel.leave();
         }
-    }, [channel])
+    }, [channelName])
 
     return state;
 }

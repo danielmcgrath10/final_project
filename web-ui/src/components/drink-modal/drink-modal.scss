@@ -5,3 +5,10 @@
 #text-input {
     height: 45px;
 }
+
+#post-modal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

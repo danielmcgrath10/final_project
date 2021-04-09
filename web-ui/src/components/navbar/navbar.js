@@ -11,7 +11,7 @@ import DrinkModal from "../drink-modal/drink-modal";
 function Navbar({ session }) {
   const [modalOpen, setModalOpen] = useState(false);
 
-  let pages = ["Feed", "map", "around me"];
+  let pages = ["feed", "map", "around me"];
   const logout = (e) => {
     e.preventDefault();
     store.dispatch({ type: "session/clear" });
@@ -42,7 +42,7 @@ function Navbar({ session }) {
           </div>
         ) : null}
       </Nav>
-      <DrinkModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
+      <DrinkModal modalOpen={modalOpen} setModalOpen={setModalOpen} session={session} />
     </>
   );
 }

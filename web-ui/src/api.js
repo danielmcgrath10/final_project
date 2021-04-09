@@ -70,3 +70,19 @@ export const create_user = async (data) => {
         }
     })
 }
+
+export const create_post = async (data, session) => {
+  api_post("/posts", {post: data, session: session}).then((res) => {
+    if(res.error) {
+      console.log(res.error);
+      NotificationManager.error(res.error);
+      let action = {
+        type: "error/set",
+        data: res.error,
+      };
+      store.dispatch(action);
+    } else {
+      NotificationManager.success("Created Post");
+    }
+  })
+}

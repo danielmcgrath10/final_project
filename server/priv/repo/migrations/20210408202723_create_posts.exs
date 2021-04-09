@@ -7,7 +7,7 @@ defmodule FinalProject.Repo.Migrations.CreatePosts do
       add :lat, :float
       add :lon, :float
       add :drinkName, :string, null: false
-      add :photo_hash, :string
+      # add :photo_hash, :string
       add :rating, :float, null: false
       add :caption, :text
       add :timestamp, :utc_datetime, null: false

@@ -3,8 +3,9 @@ import React, { useEffect } from 'react';
 import {Socket} from "phoenix";
 import SocketContext from './socket-context';
 
-const SocketProvider = ((url, options, children) => {
-    const socket = new Socket(url, {params: options})
+const SocketProvider = ({url, options, children}) => {
+    let socket_url = `ws://localhost:4000${url}`;
+    const socket = new Socket(socket_url, {params: options})
 
     useEffect(() => {
         socket.connect()
@@ -15,6 +16,6 @@ const SocketProvider = ((url, options, children) => {
             {children}
         </SocketContext.Provider>
     )
-});
+};
 
 export default SocketProvider;
