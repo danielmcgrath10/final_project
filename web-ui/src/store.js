@@ -66,17 +66,23 @@ function error(state=null, action) {
 }
 
 export function feed(state=[], action){
-  console.log("state", state);
+  console.log("action", action);
+  let data;
   switch(action.type) {
     case "feed/set":
-      let data = action.data.response.data;
+      data = action.data.response.data;
       if(_.isEmpty(data)){
         return state;
       } else {
-        return data;
+        return _.reverse(data);
       }
-    case "feed/add":
-      console.log(state);
+    case "feed/update":
+      data = action.data.data;
+      if(_.isEmpty(data)){
+        return state;
+      } else {
+        return _.reverse(data);
+      }
     default:
       return state;
   }

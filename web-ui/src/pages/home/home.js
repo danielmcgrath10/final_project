@@ -19,7 +19,7 @@ function Home({session, feed}) {
                     data: payload,
                 };
                 store.dispatch(action);
-            } else if (event === "feed/add"){
+            } else if (event === "feed/update"){
                 let action = {
                     type: event,
                     data: payload
@@ -46,7 +46,7 @@ function Home({session, feed}) {
                 _.isEmpty(feed) ?
                     <h1>No Current Events</h1>
                 :
-                    _.map(feed, (post, index) => (
+                    _.map(feed.reverse(), (post, index) => (
                         <FeedCard key={index} post={post}/>
                     ))
             }

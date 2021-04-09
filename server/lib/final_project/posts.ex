@@ -19,6 +19,9 @@ defmodule FinalProject.Posts do
   """
   def list_posts do
     Repo.all(Post)
+    |> Repo.preload(:comments)
+    |> Repo.preload(:likes)
+    |> Repo.preload(:user)
   end
 
   @doc """
@@ -35,7 +38,12 @@ defmodule FinalProject.Posts do
       ** (Ecto.NoResultsError)
 
   """
-  def get_post!(id), do: Repo.get!(Post, id)
+  def get_post!(id) do
+    Repo.get!(Post, id)
+    |> Repo.preload(:comments)
+    |> Repo.preload(:likes)
+    |> Repo.preload(:user)
+  end
 
   @doc """
   Creates a post.

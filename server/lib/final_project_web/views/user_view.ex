@@ -11,7 +11,6 @@ defmodule FinalProjectWeb.UserView do
   end
 
   def render("user.json", %{user: user}) do
-    IO.inspect user
     %{id: user.id,
       name: user.name,
       email: user.email,

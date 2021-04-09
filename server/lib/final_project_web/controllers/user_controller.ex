@@ -14,7 +14,6 @@ defmodule FinalProjectWeb.UserController do
 
   def create(conn, %{"user" => user_params}) do
     user = Users.get_user_by_email(user_params["email"])
-    IO.inspect user
     if user do
       conn
       |> put_resp_header(
@@ -22,7 +21,6 @@ defmodule FinalProjectWeb.UserController do
         "application/json; charset=UTF-8")
       |> send_resp(:unauthorized, Jason.encode!(%{error: "Fail"}))
     else
-      IO.inspect user_params
       photo = user_params["profile_photo"]
       if photo do
         {:ok, hash} = Photos.save_photo(photo.filename, photo.path)
