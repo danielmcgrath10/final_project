@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { NotificationManager } from "react-notifications";
 import {createStore, combineReducers} from "redux";
 
@@ -64,10 +65,18 @@ function error(state=null, action) {
   }
 }
 
-export function feed_reducer(state={}, {event, payload}){
-  switch(event) {
+export function feed(state=[], action){
+  console.log("state", state);
+  switch(action.type) {
     case "feed/set":
-      return payload;
+      let data = action.data.response.data;
+      if(_.isEmpty(data)){
+        return state;
+      } else {
+        return data;
+      }
+    case "feed/add":
+      console.log(state);
     default:
       return state;
   }
@@ -76,7 +85,7 @@ export function feed_reducer(state={}, {event, payload}){
 function root_reducer(state, action) {
     console.log("root reducer", state, action);
     let reducer = combineReducers({
-        users, session, error
+        users, session, error, feed
     });
     return reducer(state, action);
 }

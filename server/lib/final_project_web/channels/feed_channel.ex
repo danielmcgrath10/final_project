@@ -1,10 +1,14 @@
 defmodule FinalProjectWeb.FeedChannel do
   use Phoenix.Channel
+  alias FinalProject.Posts
+  alias FinalProjectWeb
 
   @impl true
   def join("feed:" <> name, payload, socket) do
     if authorized?(payload["params"]["session"]["user_id"], payload["params"]["session"]["token"], socket) do
-      {:ok, socket}
+      posts = Posts.get_recent_posts();
+      IO.inspect(posts);
+      {:ok, FinalProjectWeb.PostView.render("index.json", %{posts: posts}), socket}
     else
       {:error, %{reason: "Unauthorized"}}
     end

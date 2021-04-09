@@ -71,6 +71,10 @@ export const create_user = async (data) => {
     })
 }
 
+export const get_user = async (id) => {
+  api_get()
+}
+
 export const create_post = async (data, session) => {
   api_post("/posts", {post: data, session: session}).then((res) => {
     if(res.error) {

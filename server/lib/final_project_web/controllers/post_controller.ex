@@ -24,7 +24,7 @@ defmodule FinalProjectWeb.PostController do
         conn
         |> put_status(:created)
         |> put_resp_header("location", Routes.post_path(conn, :show, post))
-        |> render("show.json", post: post)
+        |> FinalProjectWeb.Endpoint.broadcast("feed:", "feed/add", render("show.json", post: post))
       end
     else
       conn

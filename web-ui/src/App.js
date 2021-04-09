@@ -7,7 +7,6 @@ import {connect} from "react-redux";
 import Home from './pages/home/home';
 import Navbar from "./components/navbar/navbar";
 import 'react-notifications/lib/notifications.css';
-import useChannel from './components/socket/channel';
 import SocketProvider from './components/socket/socket-provider';
 
 

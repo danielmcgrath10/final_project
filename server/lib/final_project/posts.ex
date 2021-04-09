@@ -101,4 +101,16 @@ defmodule FinalProject.Posts do
   def change_post(%Post{} = post, attrs \\ %{}) do
     Post.changeset(post, attrs)
   end
+
+  # Got Inspiration for this query from Stack Overflow and
+  # the Ecto Documentation
+  def get_recent_posts() do
+    past = DateTime.utc_now()
+    |> DateTime.add(-7200, :second)
+    query = from(p in Post, where: p.timestamp > ^past, select: p)
+    Repo.all(query)
+    |> Repo.preload(:comments)
+    |> Repo.preload(:likes)
+    |> Repo.preload(:user)
+  end
 end
