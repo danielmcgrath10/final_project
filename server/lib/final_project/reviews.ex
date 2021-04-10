@@ -19,6 +19,8 @@ defmodule FinalProject.Reviews do
   """
   def list_reviews do
     Repo.all(Review)
+    |> Repo.preload(:revcomments)
+    |> Repo.preload(:votes)
   end
 
   @doc """
@@ -35,9 +37,15 @@ defmodule FinalProject.Reviews do
       ** (Ecto.NoResultsError)
 
   """
-  def get_review!(id), do: Repo.get!(Review, id)
+  def get_review!(id) do
+    Repo.get!(Review, id)
+    |> Repo.preload(:revcomments)
+    |> Repo.preload(:votes)
+  end
   def get_review(place_id) do
     Repo.get_by(Review, place_id: place_id)
+    |> Repo.preload(:revcomments)
+    |> Repo.preload(:votes)
   end
 
   @doc """

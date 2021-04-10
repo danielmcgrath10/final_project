@@ -4,10 +4,12 @@ import { NotificationManager } from "react-notifications";
 
 const url = "http://localhost:4000/api/v1";
 
-export async function api_get(path, input=null, user_id=null, token=null) {
+export async function api_get(path, id=null, input=null, user_id=null, token=null) {
     let text;
     if (user_id && token && input){
       text = await fetch(url + path + "?input=" + input + "&user_id=" + user_id + "&token=" +token);
+    } else if(user_id && token && id) {
+      text = await fetch(url + path + "?id=" + id + "&user_id=" + user_id + "&token=" +token);
     } else {
       text = await fetch(url + path, {});
     }
@@ -26,6 +28,19 @@ console.log(opts);
 let text = await fetch(url + path, opts);
 return await text.json();
 }
+
+async function api_put(path, data) {
+  let opts = {
+      method: "PUT",
+      headers: {
+      "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+  };
+  console.log(opts);
+  let text = await fetch(url + path, opts);
+  return await text.json();
+  }
   
 async function api_patch(id, path, data) {
 let opts = {
@@ -124,11 +139,47 @@ export const delete_comment = async (id, session) => {
 }
 
 export const get_reviews = async (input, session) => {
-  api_get("/reviews", input, session.user_id, session.token).then((data) => {
+  console.log(input, session);
+  api_get("/reviews", null, input, session.user_id, session.token).then((data) => {
     console.log(data);
     store.dispatch({
       type: "reviews/set",
       data: data
     })
   })
+}
+
+export const create_review = async(data, session) => {
+  api_post("/reviews", {review: data, session: session}).then((data) => {
+    console.log(data);
+    store.dispatch({
+      type: "reviews/add_review",
+      data: data
+    })
+    return data;
+  })
+}
+
+export const get_review = async (id, session) => {
+  api_get("/reviews", id, null, session.user_id, session.token).then((data) => {
+    console.log(data);
+    store.dispatch({
+      type: "reviews/add_review",
+      data: data
+    });
+  });
+}
+
+export const create_like = async(data, session) => {
+  api_put("/votes", {vote: data, session: session}).then(() => get_review(data.review_id, session))
+}
+
+export const create_revComment = async (data, session) => {
+  api_post("/revcomment", {rev_comment: data, session: session}).then(() => {
+    get_review(data.review_id, session);
+  })
+}
+
+export const delete_revComment = async (id, session, revID) => {
+  api_delete("/revcomment", id, {session: session}).then(() => get_review(revID, session));
 }

@@ -16,9 +16,7 @@ defmodule FinalProjectWeb.ReviewController do
       case HTTPoison.get(URI.encode(url)) do
         {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
           {:ok, json} = Jason.decode(body)
-          IO.inspect json
           candidates = json["candidates"]
-          IO.inspect candidates
           if !Enum.empty?(candidates) do
             cand = List.first(candidates)
             place_id = cand["place_id"]
@@ -26,7 +24,7 @@ defmodule FinalProjectWeb.ReviewController do
             if review do
               resbody = %{
                 place: json,
-                review: render(conn, "show.json", review: review)
+                review: FinalProjectWeb.ReviewView.render("show.json", review: review)
               }
               conn
               |> put_resp_header(
@@ -57,13 +55,19 @@ defmodule FinalProjectWeb.ReviewController do
         "application/json; charset=UTF-8")
       |> send_resp(:unauthorized, Jason.encode!(%{error: "Unauthorized"}))
     end
+  end
 
-    send_resp(conn, :no_content, "")
-
-    # if req do
-    #   reviews = Reviews.list_reviews()
-    #   render(conn, "index.json", reviews: reviews)
-    # end
+  def index(conn, %{"id" => id, "user_id" => user_id, "token" => token}) do
+    if SessionController.authorized?(conn, user_id, token) do
+      review = Reviews.get_review!(id)
+      render(conn, "show.json", review: review)
+    else
+      conn
+      |> put_resp_header(
+        "content-type",
+        "application/json; charset=UTF-8")
+      |> send_resp(:unauthorized, Jason.encode!(%{error: "Unauthorized"}))
+    end
   end
 
   def create(conn, %{"review" => review_params}) do

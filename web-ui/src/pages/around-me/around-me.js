@@ -7,6 +7,7 @@ import "./around-me.scss";
 import {zipcodes} from "zipcodes";
 import { Search } from "@material-ui/icons";
 import { get_reviews } from "../../api";
+import ReviewCard from "../../components/review-card/review-card";
 
 function AroundMe({session, reviews}) {
     const [loading, setLoading] = useState(false);
@@ -71,11 +72,7 @@ function AroundMe({session, reviews}) {
                                     No Results to Show. Try Another Query
                                 </Typography>
                         :
-                            _.map(reviews, (review, index) => (
-                                <Typography>
-                                    Hello World
-                                </Typography>
-                            ))
+                            <ReviewCard />
                     }
                 </Col>
             </Row>

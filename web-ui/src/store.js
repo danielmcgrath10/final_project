@@ -58,6 +58,11 @@ function reviews(state=[], action){
   switch(action.type) {
     case "reviews/set":
       return action.data;
+    case "reviews/add_review":
+      let data = action.data;
+      return Object.assign({}, state, {
+        review: data,
+      })
     default:
       return state;
   }

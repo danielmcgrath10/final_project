@@ -19,6 +19,7 @@ defmodule FinalProject.RevComments do
   """
   def list_revcomment do
     Repo.all(RevComment)
+    |> Repo.preload(:user)
   end
 
   @doc """
@@ -35,7 +36,10 @@ defmodule FinalProject.RevComments do
       ** (Ecto.NoResultsError)
 
   """
-  def get_rev_comment!(id), do: Repo.get!(RevComment, id)
+  def get_rev_comment!(id) do
+    Repo.get!(RevComment, id)
+    |> Repo.preload(:user)
+  end
 
   @doc """
   Creates a rev_comment.
