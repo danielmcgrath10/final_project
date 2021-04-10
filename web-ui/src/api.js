@@ -16,6 +16,13 @@ export async function api_get(path, id=null, input=null, user_id=null, token=nul
     return await text.json(); 
 }
 
+export const get_location = async (lat, lon) => {
+  let key = "AIzaSyAU3ny9FhTNvsgB6A0CttT8RbaLKDdzf8Q";
+  let url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lon}&key=${key}&location_type=APPROXIMATE&result_type=neighborhood`;
+  let text = await fetch(url);
+  return await text.json();
+}
+
 async function api_post(path, data) {
 let opts = {
     method: "POST",

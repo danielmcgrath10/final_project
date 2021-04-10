@@ -37,7 +37,11 @@ export default function Login(props) {
 
     const update = (field, ev) => {
         let u1 = Object.assign({}, user);
-        u1[field] = ev.target.value;
+        if(field === "profile_photo"){
+            u1[field] = ev.target.files[0];
+        } else {
+            u1[field] = ev.target.value;
+        }
         setUser(u1);
     }
 

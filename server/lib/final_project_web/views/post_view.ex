@@ -15,9 +15,7 @@ defmodule FinalProjectWeb.PostView do
 
   def render("post.json", %{post: post}) do
     %{id: post.id,
-      name: post.name,
-      lat: post.lat,
-      lon: post.lon,
+      location: post.location,
       drinkName: post.drinkName,
       # photo_hash: post.photo_hash,
       rating: post.rating,

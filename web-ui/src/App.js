@@ -22,7 +22,7 @@ function App({session}) {
               <Route path={"/feed"}>
                 <Home/>
               </Route>
-              <Route path={"/around-me"}>
+              <Route path={"/search"}>
                 <AroundMe />
               </Route>
               <Route exact path={"/"}>

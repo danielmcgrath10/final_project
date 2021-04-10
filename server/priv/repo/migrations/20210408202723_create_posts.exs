@@ -3,9 +3,7 @@ defmodule FinalProject.Repo.Migrations.CreatePosts do
 
   def change do
     create table(:posts) do
-      add :name, :string
-      add :lat, :float
-      add :lon, :float
+      add :location, :string
       add :drinkName, :string, null: false
       # add :photo_hash, :string
       add :rating, :float, null: false

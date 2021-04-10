@@ -111,7 +111,7 @@ export default function FeedCard(props) {
                         {post.drinkName}
                     </div>
                 }
-                title={post.name}
+                title={post.location}
                 subheader={
                     <div className={"feed-card-subheader"}>
                         <Avatar style={{height: "25px", width: "25px", marginRight: "15px"}}>

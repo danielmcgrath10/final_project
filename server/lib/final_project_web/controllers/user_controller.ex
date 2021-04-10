@@ -22,11 +22,12 @@ defmodule FinalProjectWeb.UserController do
       |> send_resp(:unauthorized, Jason.encode!(%{error: "Fail"}))
     else
       photo = user_params["profile_photo"]
+      IO.inspect photo
       if photo do
         {:ok, hash} = Photos.save_photo(photo.filename, photo.path)
 
         user_params = user_params
-        |> Map.put("profile_photo", hash)
+        |> Map.put("photo_hash", hash)
 
         with {:ok, %User{} = user} <- Users.create_user(user_params) do
           conn

@@ -5,9 +5,7 @@ defmodule FinalProject.Posts.Post do
   schema "posts" do
     field :caption, :string
     field :drinkName, :string
-    field :lat, :float
-    field :lon, :float
-    field :name, :string
+    field :location, :string
     # field :photo_hash, :string
     field :rating, :float
     field :timestamp, :utc_datetime
@@ -24,7 +22,7 @@ defmodule FinalProject.Posts.Post do
   def changeset(post, attrs) do
     # Remember to add photo_hash back when add photos
     post
-    |> cast(attrs, [:name, :lat, :lon, :drinkName, :rating, :caption, :timestamp, :user_id])
-    |> validate_required([:name, :lat, :lon, :drinkName, :rating, :caption, :timestamp, :user_id])
+    |> cast(attrs, [:location, :drinkName, :rating, :caption, :timestamp, :user_id])
+    |> validate_required([:location, :drinkName, :rating, :caption, :timestamp, :user_id])
   end
 end

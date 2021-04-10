@@ -6,7 +6,7 @@ import { Modal, Form, InputGroup, Button, Spinner } from "react-bootstrap";
 import { LocalBar, LocalDrink } from "@material-ui/icons";
 import { NotificationManager } from "react-notifications";
 import _ from "lodash";
-import { create_post } from "../../api";
+import { create_post, get_location } from "../../api";
 
 export default function DrinkModal(props){
     const {
@@ -16,13 +16,12 @@ export default function DrinkModal(props){
     } = props;
     const [postFormValidated, setPostValidated] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [locLoading, setLocLoading] = useState(false);
 
     const [event, setEvent] = useState({
         caption: "",
         drinkName: "",
-        lat: 0,
-        lon: 0,
-        name: "",
+        location: "",
         rating: 0,
     });
 
@@ -30,9 +29,7 @@ export default function DrinkModal(props){
         setEvent({
             caption: "",
             drinkName: "",
-            lat: 0,
-            lon: 0,
-            name: "",
+            location: "",
             rating: 0,
         });
         setPostValidated(false);
@@ -40,7 +37,7 @@ export default function DrinkModal(props){
     }
 
     const createPost = () => {
-        let data = _.pick(event, ["caption", "drinkName", "lat", "lon", "name", "rating", "timestamp"]);
+        let data = _.pick(event, ["caption", "drinkName", "location", "rating", "timestamp"]);
         create_post(data, session)
         .then(() => {
             onHide();
@@ -67,6 +64,7 @@ export default function DrinkModal(props){
 
     const handleCurLocation = () => {
         if(navigator.geolocation) {
+            setLocLoading(true);
             navigator.geolocation.getCurrentPosition(setPosition);
             return;
         } else {
@@ -75,11 +73,21 @@ export default function DrinkModal(props){
     }
 
     const setPosition = (position) => {
-        let u1 = Object.assign({}, event);
-        u1.lat = position.coords.latitude;
-        u1.lon = position.coords.longitude;
-        setEvent(u1);
-        NotificationManager.success("Location Added");
+        let lat = position.coords.latitude;
+        let lon = position.coords.longitude;
+        get_location(lat, lon)
+        .then((data) => {
+            if(data && data["results"] && !_.isEmpty(data.results)){
+                console.log(data);
+                let u1 = Object.assign({}, event);
+                u1["location"] = data.results[0].formatted_address;
+                setEvent(u1);
+            }
+            setLocLoading(false);
+        })
+        .catch((err) => {
+            NotificationManager.error("Error", err);
+        });
     }
 
     return(
@@ -99,15 +107,18 @@ export default function DrinkModal(props){
                         >
                             <Form.Group>
                                 <InputGroup >
-                                    <InputGroup.Prepend >
+                                    {
+                                        locLoading ?
+                                            <Spinner animation={"border"}/>
+                                        :
                                         <Button
                                             variant={"secondary"}
                                             onClick={handleCurLocation}
                                         >
                                             Current Location
                                         </Button>
-                                    </InputGroup.Prepend>
-                                    <Form.Control required placeholder={"Venue Name"} className={"activity-modal-input"} value={event.name} onChange={(e) => update("name", e)}/>
+                                    }  
+                                    <Form.Control required placeholder={"Venue Name"} className={"activity-modal-input"} value={event.location} onChange={(e) => update("location", e)}/>
                                 </InputGroup>
                             </Form.Group>
                             <Form.Group id={"text-input"} >
