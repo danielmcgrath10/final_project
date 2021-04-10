@@ -23,6 +23,8 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: "blue",
     },
     title: {
+        display: "flex",
+        justifyContent: "flex-end",
         fontSize: "15pt",
     },
     subheader: {
@@ -102,7 +104,7 @@ export default function FeedCard(props) {
         <Card className={"feed-card"}>
             <CardHeader
                 avatar ={
-                    <div>
+                    <div className={"feed-card-avatar"}>
                         <Avatar aria-label={"rating"} className={classes.avatar}>
                             {post.rating}{<LocalBar/>}
                         </Avatar>
@@ -111,7 +113,10 @@ export default function FeedCard(props) {
                 }
                 title={post.name}
                 subheader={
-                    <div>
+                    <div className={"feed-card-subheader"}>
+                        <Avatar style={{height: "25px", width: "25px", marginRight: "15px"}}>
+                            <img className={"profile-avatar-card"} src={`http://localhost:4000/api/v1/users/photo/${post.user.id}`}/>
+                        </Avatar>
                         {post.user.name}
                     </div>
                 }

@@ -24,6 +24,7 @@ defmodule FinalProjectWeb.Router do
     pipe_through :api
 
     resources "/users", UserController, except: [:new, :edit]
+    get "/users/photo/:id", UserController, :profile_photo
     resources "/session", SessionController, only: [:create]
     resources "/posts", PostController, except: [:new, :edit]
     resources "/likes", LikeController, except: [:new, :edit]

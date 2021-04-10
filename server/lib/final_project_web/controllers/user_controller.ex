@@ -65,4 +65,13 @@ defmodule FinalProjectWeb.UserController do
       send_resp(conn, :no_content, "")
     end
   end
+
+  def profile_photo(conn, %{"id" => id}) do
+    user = Users.get_user!(id)
+    {:ok, _name, data} = Photos.load_photo(user.photo_hash)
+
+    conn
+    |> put_resp_content_type("image/jpeg")
+    |> send_resp(200, data)
+  end
 end

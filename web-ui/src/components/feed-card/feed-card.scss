@@ -43,3 +43,21 @@
     text-decoration: none;
     cursor: pointer;
 }
+
+.profile-avatar-card{
+    height: auto;
+    width: 100%;
+}
+
+.feed-card-avatar{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.feed-card-subheader{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
