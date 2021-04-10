@@ -1,3 +1,7 @@
+textarea {
+    resize: none;
+}
+
 .review-card{
     display: flex;
     flex-direction: row;
@@ -20,7 +24,6 @@
     align-content: flex-end;
     justify-content: flex-end;
     flex-direction: column;
-    padding-top: 10px;
 }
 
 .review-compose {
@@ -51,6 +54,7 @@
 }
 
 .review-card-feed{
+    border-radius: 5px;
     display: flex;
     flex-direction: column;
     flex: 1;
@@ -59,4 +63,14 @@
     border-bottom: 1px solid #eeee;
     overflow-y: scroll;
     margin-bottom: 10px;
+}
+
+.review-card-description{
+    display: flex;
+    flex-direction: row;
+}
+
+.review-card-description-item{
+    display: flex;
+    flex-direction: row;
 }

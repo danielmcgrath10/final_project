@@ -28,19 +28,6 @@ console.log(opts);
 let text = await fetch(url + path, opts);
 return await text.json();
 }
-
-async function api_put(path, data) {
-  let opts = {
-      method: "PUT",
-      headers: {
-      "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-  };
-  console.log(opts);
-  let text = await fetch(url + path, opts);
-  return await text.json();
-  }
   
 async function api_patch(id, path, data) {
 let opts = {
@@ -150,14 +137,16 @@ export const get_reviews = async (input, session) => {
 }
 
 export const create_review = async(data, session) => {
-  api_post("/reviews", {review: data, session: session}).then((data) => {
+  let res;
+  await api_post("/reviews", {review: data, session: session}).then((data) => {
     console.log(data);
     store.dispatch({
       type: "reviews/add_review",
       data: data
     })
-    return data;
+    res = data;
   })
+  return res;
 }
 
 export const get_review = async (id, session) => {
@@ -171,7 +160,7 @@ export const get_review = async (id, session) => {
 }
 
 export const create_like = async(data, session) => {
-  api_put("/votes", {vote: data, session: session}).then(() => get_review(data.review_id, session))
+  api_post("/votes", {vote: data, session: session}).then(() => get_review(data.review_id, session))
 }
 
 export const create_revComment = async (data, session) => {

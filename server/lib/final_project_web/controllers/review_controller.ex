@@ -72,10 +72,11 @@ defmodule FinalProjectWeb.ReviewController do
 
   def create(conn, %{"review" => review_params}) do
     with {:ok, %Review{} = review} <- Reviews.create_review(review_params) do
+      newRev = Reviews.get_review!(review.id)
       conn
       |> put_status(:created)
-      |> put_resp_header("location", Routes.review_path(conn, :show, review))
-      |> render("show.json", review: review)
+      |> put_resp_header("location", Routes.review_path(conn, :show, newRev))
+      |> render("show.json", review: newRev)
     end
   end
 

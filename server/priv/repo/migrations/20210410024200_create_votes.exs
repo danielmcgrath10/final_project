@@ -10,6 +10,7 @@ defmodule FinalProject.Repo.Migrations.CreateVotes do
       timestamps()
     end
 
+    create index(:votes, [:review_id, :user_id], unique: true)
     create index(:votes, [:user_id])
     create index(:votes, [:review_id])
   end

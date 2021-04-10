@@ -29,6 +29,7 @@ function ReviewCard({session, reviews}) {
     const reset = () => {
         setRevCom({body: ""});
         setRevComVal(false);
+        setRevRating(0);
     }
 
     const subRevCom = (e) => {
@@ -45,9 +46,10 @@ function ReviewCard({session, reviews}) {
                     rating: 0
                 }
                 create_review(data, session).then((newData) => {
+                    console.log(newData);
                     data = {
                         user_id: session.user_id,
-                        review_id: newData.id,
+                        review_id: newData.data.id,
                         body: revCom.body
                     }
                     create_revComment(data, session).then(() => reset());
@@ -81,18 +83,24 @@ function ReviewCard({session, reviews}) {
             create_review(data, session).then((newData) => {
                 data = {
                     user_id: session.user_id,
-                    review_id: newData.id,
+                    review_id: newData.data.id,
                     value: val
                 }
-                create_like(data, session);
+                create_like(data, session).then(()=>setRevRating(0));
             });
         } else {
             data = {
                 user_id: session.user_id,
-                review_id: review.id,
+                review_id: review.data.id,
                 value: val
             }
-            create_like(data, session);
+            create_like(data, session).then(()=>setRevRating(0));
+        }
+    }
+
+    const handleKeyPress = (e) => {
+        if(e.key === "Enter"){
+            subRevCom(e);
         }
     }
 
@@ -114,19 +122,17 @@ function ReviewCard({session, reviews}) {
                         image={(_.has(place, "photos") && !_.isEmpty(place.photos)) ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=${place.photos[0].width}&photoreference=${place.photos[0].photo_reference}&key=AIzaSyAU3ny9FhTNvsgB6A0CttT8RbaLKDdzf8Q&maxheight=${place.photos[0].height}`: null}
                         title={place.name}
                     />
-                    <Box>
-                        <Typography component={"legend"}>User Rating</Typography>
-                        {/* <Rating 
+                    <Box className={"review-card-description"}>
+                        <Typography component={"legend"}>User Rating: </Typography>
+                        <Rating 
                             readOnly
                             name={"Rating"}
                             size={"large"}
                             icon={<LocalBar fontSize={"inherit"} />}
-                            value={Number(revRating)}
-                        /> */}
+                            value={review ? Number(_.sumBy(review.data.votes, "value")/review.data.votes.length) : 0}
+                        />
                     </Box>
-                    <Typography>
-                        Open: {place.opening_hours.open_now ? "Yes" : "No"}
-                    </Typography>
+                    <Typography className={"review-card-description-item"} >Open: {place.opening_hours.open_now ? "Yes" : "No"} </Typography>
                 </CardContent>
             </div>
             <div className={"review-card-right"}>
@@ -173,6 +179,7 @@ function ReviewCard({session, reviews}) {
                             rows={3}
                             value={revCom.body}
                             onChange={(e) => update("body", e)}
+                            onKeyPress={handleKeyPress}
                         />
                     </Form.Group>
                     <IconButton
