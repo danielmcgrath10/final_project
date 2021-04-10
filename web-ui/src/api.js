@@ -4,10 +4,14 @@ import { NotificationManager } from "react-notifications";
 
 const url = "http://localhost:4000/api/v1";
 
-export async function api_get(path) {
-    let text = await fetch(url + path, {});
-    let resp = await text.json();
-    return resp.data; 
+export async function api_get(path, input=null, user_id=null, token=null) {
+    let text;
+    if (user_id && token && input){
+      text = await fetch(url + path + "?input=" + input + "&user_id=" + user_id + "&token=" +token);
+    } else {
+      text = await fetch(url + path, {});
+    }
+    return await text.json(); 
 }
 
 async function api_post(path, data) {
@@ -117,4 +121,14 @@ export const add_comment = async (data, session) => {
 
 export const delete_comment = async (id, session) => {
   api_delete("/comments", id, {session: session});
+}
+
+export const get_reviews = async (input, session) => {
+  api_get("/reviews", input, session.user_id, session.token).then((data) => {
+    console.log(data);
+    store.dispatch({
+      type: "reviews/set",
+      data: data
+    })
+  })
 }

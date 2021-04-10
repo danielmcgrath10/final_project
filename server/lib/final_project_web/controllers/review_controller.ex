@@ -3,12 +3,67 @@ defmodule FinalProjectWeb.ReviewController do
 
   alias FinalProject.Reviews
   alias FinalProject.Reviews.Review
+  alias FinalProjectWeb.SessionController
 
   action_fallback FinalProjectWeb.FallbackController
 
-  def index(conn, _params) do
-    reviews = Reviews.list_reviews()
-    render(conn, "index.json", reviews: reviews)
+  def index(conn, %{"input" => input, "user_id" => user_id, "token" => token}) do
+    apikey = "AIzaSyDbjo2l0isKuzvgy9-kygM25p3jLjgL3nk"
+    url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=#{input}&inputtype=textquery&key=#{apikey}&fields=business_status,formatted_address,icon,name,photos,geometry,opening_hours,place_id"
+    IO.inspect URI.encode(url)
+
+    if SessionController.authorized?(conn, user_id, token) do
+      case HTTPoison.get(URI.encode(url)) do
+        {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+          {:ok, json} = Jason.decode(body)
+          IO.inspect json
+          candidates = json["candidates"]
+          IO.inspect candidates
+          if !Enum.empty?(candidates) do
+            cand = List.first(candidates)
+            place_id = cand["place_id"]
+            review = Reviews.get_review(place_id)
+            if review do
+              resbody = %{
+                place: json,
+                review: render(conn, "show.json", review: review)
+              }
+              conn
+              |> put_resp_header(
+                "content-type",
+              "application/json; charset=UTF-8")
+              |> send_resp(200, Jason.encode!(resbody))
+            else
+              conn
+              |> put_resp_header(
+                "content-type",
+              "application/json; charset=UTF-8")
+              |> send_resp(200, Jason.encode!(%{place: json}))
+            end
+          else
+            send_resp(conn, :no_content, "404")
+          end
+        {:ok, %HTTPoison.Response{status_code: 404}} ->
+          IO.puts "Not found :("
+          send_resp(conn, :no_content, "404")
+        {:error, %HTTPoison.Error{reason: reason}} ->
+          IO.inspect reason
+          send_resp(conn, :no_content, "Error")
+      end
+    else
+      conn
+      |> put_resp_header(
+        "content-type",
+        "application/json; charset=UTF-8")
+      |> send_resp(:unauthorized, Jason.encode!(%{error: "Unauthorized"}))
+    end
+
+    send_resp(conn, :no_content, "")
+
+    # if req do
+    #   reviews = Reviews.list_reviews()
+    #   render(conn, "index.json", reviews: reviews)
+    # end
   end
 
   def create(conn, %{"review" => review_params}) do

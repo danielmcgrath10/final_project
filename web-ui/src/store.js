@@ -54,6 +54,15 @@ function save_session(sess) {
     }
   }
 
+function reviews(state=[], action){
+  switch(action.type) {
+    case "reviews/set":
+      return action.data;
+    default:
+      return state;
+  }
+}
+
 function error(state=null, action) {
   switch(action.type) {
     case "session/set":
@@ -91,7 +100,7 @@ export function feed(state=[], action){
 function root_reducer(state, action) {
     console.log("root reducer", state, action);
     let reducer = combineReducers({
-        users, session, error, feed
+        users, session, error, feed, reviews
     });
     return reducer(state, action);
 }

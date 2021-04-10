@@ -36,6 +36,9 @@ defmodule FinalProject.Reviews do
 
   """
   def get_review!(id), do: Repo.get!(Review, id)
+  def get_review(place_id) do
+    Repo.get_by(Review, place_id: place_id)
+  end
 
   @doc """
   Creates a review.

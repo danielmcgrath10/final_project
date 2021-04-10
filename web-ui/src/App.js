@@ -8,6 +8,7 @@ import Home from './pages/home/home';
 import Navbar from "./components/navbar/navbar";
 import 'react-notifications/lib/notifications.css';
 import SocketProvider from './components/socket/socket-provider';
+import AroundMe from "./pages/around-me/around-me";
 
 
 function App({session}) {
@@ -22,7 +23,7 @@ function App({session}) {
                 <Home/>
               </Route>
               <Route path={"/around-me"}>
-
+                <AroundMe />
               </Route>
               <Route exact path={"/"}>
                 <Redirect to={"/feed"} />
