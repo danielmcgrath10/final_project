@@ -4,7 +4,7 @@ import clsx from "clsx";
 import _ from "lodash";
 import React, { useState } from "react";
 import { Form, Row } from "react-bootstrap";
-import { add_comment, delete_comment } from "../../api";
+import { add_comment, add_like, delete_comment, del_like } from "../../api";
 import "./feed-card.scss";
 
 // Got this format from the Material Ui Site
@@ -72,8 +72,18 @@ export default function FeedCard(props) {
         delete_comment(id, session);
     }
 
-    const handleLikeClick = () => {
-
+    const handleLikeClick = (id) => {
+        let like = _.find(post.likes, ["user_id", session.user_id]);
+        if(like){
+            del_like(like.id, session);
+        } else {
+            let data = {
+                value: 1,
+                user_id: session.user_id,
+                post_id: post.id
+            };
+            add_like(data, session);
+        }
     }
 
     const subCom = (e) => {
@@ -122,7 +132,7 @@ export default function FeedCard(props) {
                 >
                     {post.likes.length}
                     <ThumbUp
-                        // color={_.find(post.likes, [""])}
+                        color={_.find(post.likes, ["user_id", session["user_id"]] ? "primary" : "secondary")}
                     />
                 </IconButton>
                 <IconButton

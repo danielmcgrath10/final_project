@@ -103,6 +103,14 @@ export const create_post = async (data, session) => {
   })
 }
 
+export const add_like = async (data, session) => {
+  api_post("/likes", {like: data, session: session});
+}
+
+export const del_like = async (id, session) => {
+  api_delete("/likes", id, {session: session});
+}
+
 export const add_comment = async (data, session) => {
   api_post("/comments", {comment: data, session: session});
 }

@@ -12,6 +12,8 @@ defmodule FinalProjectWeb.LikeView do
 
   def render("like.json", %{like: like}) do
     %{id: like.id,
-      value: like.value}
+      value: like.value,
+      user_id: like.user_id
+    }
   end
 end
