@@ -18,11 +18,14 @@ function App({session}) {
           <SocketProvider url={"/socket"}>
             <Navbar/>
             <Switch>
-              <Route path={"/home"}>
+              <Route path={"/feed"}>
                 <Home/>
               </Route>
+              <Route path={"/around-me"}>
+
+              </Route>
               <Route exact path={"/"}>
-                <Redirect to={"/home"} />
+                <Redirect to={"/feed"} />
               </Route>
             </Switch>
           </SocketProvider>

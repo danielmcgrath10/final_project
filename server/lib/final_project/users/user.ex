@@ -11,6 +11,8 @@ defmodule FinalProject.Users.User do
     has_many :posts, FinalProject.Posts.Post
     has_many :comments, FinalProject.Comments.Comment
     has_many :likes, FinalProject.Likes.Like
+    has_many :revcomments, FinalProject.RevComments.RevComment
+    has_many :votes, FinalProject.Votes.Vote
 
     timestamps()
   end

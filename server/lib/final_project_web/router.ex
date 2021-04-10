@@ -28,6 +28,9 @@ defmodule FinalProjectWeb.Router do
     resources "/posts", PostController, except: [:new, :edit]
     resources "/likes", LikeController, except: [:new, :edit]
     resources "/comments", CommentController, except: [:new, :edit]
+    resources "/reviews", ReviewController, except: [:new, :edit]
+    resources "/votes", VoteController, except: [:new, :edit]
+    resources "/revcomment", RevCommentController, except: [:new, :edit]
   end
 
   # Enables LiveDashboard only for development

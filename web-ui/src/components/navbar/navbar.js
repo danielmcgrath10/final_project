@@ -22,7 +22,7 @@ function Navbar({ session }) {
   const popNav = () => {
     return pages.map((page, index) => (
       <Nav.Item key={index}>
-        <Nav.Link href={`/${page}`}>{_.upperFirst(page)}</Nav.Link>
+        <Nav.Link href={`/${page.replace(/\s/g , "-")}`}>{_.upperFirst(page)}</Nav.Link>
       </Nav.Item>
     ));
   };
