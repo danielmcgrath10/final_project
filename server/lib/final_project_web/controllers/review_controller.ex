@@ -12,6 +12,7 @@ defmodule FinalProjectWeb.ReviewController do
     url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=#{input}&inputtype=textquery&key=#{apikey}&fields=business_status,formatted_address,icon,name,photos,geometry,opening_hours,place_id"
 
     if SessionController.authorized?(conn, user_id, token) do
+      # This is taken from the documentation of HTTPoison
       case HTTPoison.get(URI.encode(url)) do
         {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
           {:ok, json} = Jason.decode(body)
@@ -41,7 +42,6 @@ defmodule FinalProjectWeb.ReviewController do
             send_resp(conn, :no_content, "404")
           end
         {:ok, %HTTPoison.Response{status_code: 404}} ->
-          IO.puts "Not found :("
           send_resp(conn, :no_content, "404")
         {:error, %HTTPoison.Error{reason: reason}} ->
           send_resp(conn, :no_content, "Error")
