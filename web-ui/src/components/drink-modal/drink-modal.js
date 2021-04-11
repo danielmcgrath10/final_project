@@ -78,7 +78,6 @@ export default function DrinkModal(props){
         get_location(lat, lon)
         .then((data) => {
             if(data && data["results"] && !_.isEmpty(data.results)){
-                console.log(data);
                 let u1 = Object.assign({}, event);
                 u1["location"] = data.results[0].formatted_address;
                 setEvent(u1);

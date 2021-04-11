@@ -13,7 +13,6 @@ function Home({session, feed}) {
 
         channel.onMessage = (event, payload) => {
             if(event === "phx_reply"){
-                console.log(event);
                 let action = {
                     type: "feed/set",
                     data: payload,

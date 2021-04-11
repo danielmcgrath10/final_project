@@ -31,7 +31,6 @@ let opts = {
     },
     body: JSON.stringify(data),
 };
-console.log(opts);
 let text = await fetch(url + path, opts);
 return await text.json();
 }
@@ -44,7 +43,6 @@ let opts = {
     },
     body: JSON.stringify(data),
 };
-console.log(opts);
 let text = await fetch(
     url + path + "/" + id,
     opts
@@ -67,7 +65,6 @@ async function api_delete(path, id, session) {
 //Taken from the notes
 export function api_login(email, password) {
     api_post("/session", { email: email, password: password }).then((data) => {
-      console.log("login resp", data);
       if (data.session) {
         let action = {
           type: "session/set",
@@ -75,7 +72,6 @@ export function api_login(email, password) {
         };
         store.dispatch(action);
       } else if (data.error) {
-        console.log(data.error);
         NotificationManager.error(data.error);
         let action = {
           type: "error/set",
@@ -133,9 +129,7 @@ export const delete_comment = async (id, session) => {
 }
 
 export const get_reviews = async (input, session) => {
-  console.log(input, session);
   api_get("/reviews", null, input, session.user_id, session.token).then((data) => {
-    console.log(data);
     store.dispatch({
       type: "reviews/set",
       data: data
@@ -146,7 +140,6 @@ export const get_reviews = async (input, session) => {
 export const create_review = async(data, session) => {
   let res;
   await api_post("/reviews", {review: data, session: session}).then((data) => {
-    console.log(data);
     store.dispatch({
       type: "reviews/add_review",
       data: data
@@ -158,7 +151,6 @@ export const create_review = async(data, session) => {
 
 export const get_review = async (id, session) => {
   api_get("/reviews", id, null, session.user_id, session.token).then((data) => {
-    console.log(data);
     store.dispatch({
       type: "reviews/add_review",
       data: data

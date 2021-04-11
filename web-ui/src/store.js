@@ -80,7 +80,6 @@ function error(state=null, action) {
 }
 
 export function feed(state=[], action){
-  console.log("action", action);
   let data;
   switch(action.type) {
     case "feed/set":
@@ -103,7 +102,6 @@ export function feed(state=[], action){
 }
 
 function root_reducer(state, action) {
-    console.log("root reducer", state, action);
     let reducer = combineReducers({
         users, session, error, feed, reviews
     });

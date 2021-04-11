@@ -37,7 +37,6 @@ function ReviewCard({session, reviews}) {
         e.preventDefault();
         e.stopPropagation();
 
-        console.log(review, place)
         if(form.checkValidity()){
             let data;
             if(!review){
@@ -46,7 +45,6 @@ function ReviewCard({session, reviews}) {
                     rating: 0
                 }
                 create_review(data, session).then((newData) => {
-                    console.log(newData);
                     data = {
                         user_id: session.user_id,
                         review_id: newData.data.id,
