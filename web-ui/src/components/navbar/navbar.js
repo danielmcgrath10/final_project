@@ -19,6 +19,8 @@ function Navbar({ session }) {
   const createActivity = () => setModalOpen(true);
 
 
+  // This is inspired slightly from a Stack Overflow
+  // Post to help with the replacing spaces 
   const popNav = () => {
     return pages.map((page, index) => (
       <Nav.Item key={index}>
@@ -36,7 +38,7 @@ function Navbar({ session }) {
               <Nav.Link onClick={() => createActivity()}>New Drink</Nav.Link>
             </Nav.Item>
             <NavDropdown title={session.email} id={"nav-dropdown"}>
-              <NavDropdown.Item href={`/users/${session.user_id}`}>Go To Profile</NavDropdown.Item>
+              {/* <NavDropdown.Item href={`/users/${session.user_id}`}>Go To Profile</NavDropdown.Item> */}
               <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item>
             </NavDropdown>
           </div>

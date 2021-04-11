@@ -8,6 +8,9 @@ import FeedCard from "../../components/feed-card/feed-card";
 
 function Home({session, feed}) {
     const socket = useContext(SocketContext);
+
+    // Portions inspired by:
+    // https://medium.com/flatiron-labs/improving-ux-with-phoenix-channels-react-hooks-8e661d3a771e
     useEffect(() => {
         const channel = socket.channel("feed:", {params: {session: session}});
 

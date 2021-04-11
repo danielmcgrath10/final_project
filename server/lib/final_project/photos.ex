@@ -1,3 +1,4 @@
+# Class notes all the way
 defmodule FinalProject.Photos do
   def save_photo(name, path) do
     data = File.read!(path)

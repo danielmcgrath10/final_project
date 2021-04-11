@@ -1,8 +1,9 @@
+// Portions Inpsired By the class Notes
 import store from "./store";
 import _ from "lodash";
 import { NotificationManager } from "react-notifications";
 
-const url = "http://localhost:4000/api/v1";
+const url = "https://final.danny-mcgrath.com/api/v1";
 
 export async function api_get(path, id=null, input=null, user_id=null, token=null) {
     let text;

@@ -4,7 +4,7 @@ import {Socket} from "phoenix";
 import SocketContext from './socket-context';
 
 const SocketProvider = ({url, options, children}) => {
-    let socket_url = `ws://localhost:4000${url}`;
+    let socket_url = `wss://final.danny-mcgrath.com${url}`;
     const socket = new Socket(socket_url, {params: options})
 
     useEffect(() => {

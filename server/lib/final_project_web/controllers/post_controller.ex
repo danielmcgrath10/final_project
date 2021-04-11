@@ -1,3 +1,4 @@
+# This was inspired by the Class Notes
 defmodule FinalProjectWeb.PostController do
   use FinalProjectWeb, :controller
 

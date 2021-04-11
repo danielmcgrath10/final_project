@@ -25,6 +25,7 @@ defmodule FinalProject.Users.User do
     |> validate_required([:name, :email, :password_hash, :photo_hash])
   end
 
+  # The two functions below were inspired by the course notes
   def add_password_hash(cset, nil) do
     cset
   end

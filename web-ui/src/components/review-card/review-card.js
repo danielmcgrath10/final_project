@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 import { create_like, create_revComment, create_review, delete_revComment } from "../../api";
 import "./review-card.scss";
 
+// Portions are inspired by the course notes
 function ReviewCard({session, reviews}) {
     let place = reviews.place.candidates[0];
     let review = reviews.review;

@@ -7,7 +7,8 @@ import { Form, Row } from "react-bootstrap";
 import { add_comment, add_like, delete_comment, del_like } from "../../api";
 import "./feed-card.scss";
 
-// Got this format from the Material Ui Site
+// Got this format from the Material Ui Site and Documentation
+// Portions are inspired by the course notes
 const useStyles = makeStyles((theme) => ({
     expand: {
       transform: 'rotate(0deg)',
@@ -120,9 +121,9 @@ export default function FeedCard(props) {
                 title={post.location}
                 subheader={
                     <div className={"feed-card-subheader"}>
-                        <Avatar style={{height: "25px", width: "25px", marginRight: "15px"}}>
-                            <img className={"profile-avatar-card"} src={`http://localhost:4000/api/v1/users/photo/${post.user.id}`}/>
-                        </Avatar>
+                        {/* <Avatar style={{height: "25px", width: "25px", marginRight: "15px"}}>
+                            <img className={"profile-avatar-card"} src={`https://final.danny-mcgrath.com/api/v1/users/photo/${post.user.id}`}/>
+                        </Avatar> */}
                         {post.user.name}
                     </div>
                 }

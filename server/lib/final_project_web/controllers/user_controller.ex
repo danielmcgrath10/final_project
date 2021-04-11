@@ -1,3 +1,4 @@
+# This was inspired by the Class Notes
 defmodule FinalProjectWeb.UserController do
   use FinalProjectWeb, :controller
 

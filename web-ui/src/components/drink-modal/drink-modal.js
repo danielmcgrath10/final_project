@@ -8,6 +8,7 @@ import { NotificationManager } from "react-notifications";
 import _ from "lodash";
 import { create_post, get_location } from "../../api";
 
+// Portions are inspired by the course notes
 export default function DrinkModal(props){
     const {
         modalOpen,

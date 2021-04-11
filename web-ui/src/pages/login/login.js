@@ -94,19 +94,19 @@ export default function Login(props) {
                                 </Form.Label>
                                 <Form.Control required type={"email"} placeholder={"Enter email"} value={user.email} onChange={(e) => update("email", e)}/>
                             </Form.Group>
-                            <Form.Group className={"login-group"}>
+                            {/* <Form.Group className={"login-group"}>
                                 <Form.Label>
                                     Photo
                                 </Form.Label>
                                 <Form.File onChange={(e) => update("profile_photo", e)}/>
-                            </Form.Group>
+                            </Form.Group> */}
                             <Form.Group required className={"login-group"}>
                                 <Form.Label>
                                     Password
                                 </Form.Label>
                                 <Form.Control required type={"password"} placeholder={"Password"} onChange={(e) => update("password", e)}/>
                                 <Form.Text className="text-muted">
-                                    Password needs to be more than 10 characters, contain a sybmol, uppercase letter, and number.
+                                    Password needs to be more than 10 characters, contain a symbol, uppercase letter, and number.
                                 </Form.Text>
                             </Form.Group>
                             <Button
