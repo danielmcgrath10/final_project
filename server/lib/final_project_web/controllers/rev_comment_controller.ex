@@ -3,6 +3,7 @@ defmodule FinalProjectWeb.RevCommentController do
 
   alias FinalProject.RevComments
   alias FinalProject.RevComments.RevComment
+  alias FinalProjectWeb.SessionController
 
   action_fallback FinalProjectWeb.FallbackController
 
@@ -11,12 +12,20 @@ defmodule FinalProjectWeb.RevCommentController do
     render(conn, "index.json", revcomment: revcomment)
   end
 
-  def create(conn, %{"rev_comment" => rev_comment_params}) do
-    with {:ok, %RevComment{} = rev_comment} <- RevComments.create_rev_comment(rev_comment_params) do
+  def create(conn, %{"rev_comment" => rev_comment_params, "session" => session}) do
+    if SessionController.authorized?(conn, session["user_id"], session["token"]) do
+      with {:ok, %RevComment{} = rev_comment} <- RevComments.create_rev_comment(rev_comment_params) do
+        conn
+        |> put_status(:created)
+        |> put_resp_header("location", Routes.rev_comment_path(conn, :show, rev_comment))
+        |> render("show.json", rev_comment: rev_comment)
+      end
+    else
       conn
-      |> put_status(:created)
-      |> put_resp_header("location", Routes.rev_comment_path(conn, :show, rev_comment))
-      |> render("show.json", rev_comment: rev_comment)
+      |> put_resp_header(
+        "content-type",
+        "application/json; charset=UTF-8")
+      |> send_resp(:unauthorized, Jason.encode!(%{error: "Unauthorized"}))
     end
   end
 
@@ -33,11 +42,20 @@ defmodule FinalProjectWeb.RevCommentController do
     end
   end
 
-  def delete(conn, %{"id" => id}) do
+  def delete(conn, %{"id" => id, "session" => session}) do
     rev_comment = RevComments.get_rev_comment!(id)
 
-    with {:ok, %RevComment{}} <- RevComments.delete_rev_comment(rev_comment) do
-      send_resp(conn, :no_content, "")
+    if (SessionController.authorized?(conn, session["user_id"], session["token"])) && (session["user_id"] == rev_comment.user_id) do
+      with {:ok, %RevComment{}} <- RevComments.delete_rev_comment(rev_comment) do
+        send_resp(conn, :no_content, "")
+      end
+    else
+      conn
+      |> put_resp_header(
+        "content-type",
+        "application/json; charset=UTF-8")
+      |> send_resp(:unauthorized, Jason.encode!(%{error: "Unauthorized"}))
     end
+
   end
 end

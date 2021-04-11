@@ -100,6 +100,12 @@ export default function FeedCard(props) {
         setComVal(true);
     }
 
+    const handleKeyPress = (e) => {
+        if(e.key === "Enter"){
+            subCom(e);
+        }
+    }
+
     return(
         <Card className={"feed-card"}>
             <CardHeader
@@ -169,6 +175,7 @@ export default function FeedCard(props) {
                                 rows={3}
                                 value={comment.body}
                                 onChange={(e) => update("body", e)}
+                                onKeyPress={handleKeyPress}
                             />
                         </Form.Group>
                         <IconButton

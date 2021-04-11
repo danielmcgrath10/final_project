@@ -23,12 +23,30 @@ export default function Login(props) {
         }
     }
 
+    // Inspired by a post on StackOverflow:
+    // https://stackoverflow.com/questions/1559751/regex-to-make-sure-that-the-string-contains-at-least-one-lower-case-char-upper
+    // Took the regular expression for password validation (ie. uppercase, number, non-letter character, lowercase)
+    const validate = () => {
+        let password = user.password;
+        let regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)/g;
+        let match = password.match(regex);
+        if(match && password.length >= 10) {
+            callApi("create");
+        } else {
+            NotificationManager.error("Password Needs to be Valid")
+        }
+    }
+
     const handleSubmit = (e, type) => {
         const form = e.currentTarget;
         e.preventDefault();
         e.stopPropagation();
         if (form.checkValidity() === true) {
-            callApi(type);
+            if(type === "create"){
+                validate();
+            } else {
+                callApi(type);
+            }
         } else {
             setValidated(true);
             NotificationManager.error("Need Valid Email and/or Password");
@@ -87,6 +105,9 @@ export default function Login(props) {
                                     Password
                                 </Form.Label>
                                 <Form.Control required type={"password"} placeholder={"Password"} onChange={(e) => update("password", e)}/>
+                                <Form.Text className="text-muted">
+                                    Password needs to be more than 10 characters, contain a sybmol, uppercase letter, and number.
+                                </Form.Text>
                             </Form.Group>
                             <Button
                                 type={"submit"}

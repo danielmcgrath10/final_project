@@ -70,13 +70,21 @@ defmodule FinalProjectWeb.ReviewController do
     end
   end
 
-  def create(conn, %{"review" => review_params}) do
-    with {:ok, %Review{} = review} <- Reviews.create_review(review_params) do
-      newRev = Reviews.get_review!(review.id)
+  def create(conn, %{"review" => review_params, "session" => session}) do
+    if SessionController.authorized?(conn, session["user_id"], session["token"]) do
+      with {:ok, %Review{} = review} <- Reviews.create_review(review_params) do
+        newRev = Reviews.get_review!(review.id)
+        conn
+        |> put_status(:created)
+        |> put_resp_header("location", Routes.review_path(conn, :show, newRev))
+        |> render("show.json", review: newRev)
+      end
+    else
       conn
-      |> put_status(:created)
-      |> put_resp_header("location", Routes.review_path(conn, :show, newRev))
-      |> render("show.json", review: newRev)
+      |> put_resp_header(
+        "content-type",
+        "application/json; charset=UTF-8")
+      |> send_resp(:unauthorized, Jason.encode!(%{error: "Unauthorized"}))
     end
   end
 
