@@ -10,7 +10,6 @@ defmodule FinalProjectWeb.ReviewController do
   def index(conn, %{"input" => input, "user_id" => user_id, "token" => token}) do
     apikey = "AIzaSyDbjo2l0isKuzvgy9-kygM25p3jLjgL3nk"
     url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=#{input}&inputtype=textquery&key=#{apikey}&fields=business_status,formatted_address,icon,name,photos,geometry,opening_hours,place_id"
-    IO.inspect URI.encode(url)
 
     if SessionController.authorized?(conn, user_id, token) do
       case HTTPoison.get(URI.encode(url)) do
@@ -45,7 +44,6 @@ defmodule FinalProjectWeb.ReviewController do
           IO.puts "Not found :("
           send_resp(conn, :no_content, "404")
         {:error, %HTTPoison.Error{reason: reason}} ->
-          IO.inspect reason
           send_resp(conn, :no_content, "Error")
       end
     else

@@ -22,7 +22,6 @@ defmodule FinalProjectWeb.UserController do
       |> send_resp(:unauthorized, Jason.encode!(%{error: "Fail"}))
     else
       photo = user_params["profile_photo"]
-      IO.inspect photo
       if photo do
         {:ok, hash} = Photos.save_photo(photo.filename, photo.path)
 
